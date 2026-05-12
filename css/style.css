@@ -1,0 +1,74 @@
+body, html{
+  margin: 0;
+  padding: 0;
+
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #FCFCFC;
+}
+
+.wrapper{
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  height: 350px;
+}
+
+.logo{
+  margin: 0 auto;
+  width: 350px;
+}
+
+
+header{
+  background:url('../pictures/img/park01.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: #CCCCCC;
+ 
+}
+
+.header-content{
+  padding: 1em;
+
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.5);
+
+
+  -webkit-animation: fadein 4s; 
+  -moz-animation: fadein 4s; 
+  -ms-animation: fadein 4s; 
+  -o-animation: fadein 4s; 
+  animation: fadein 4s;
+}
+
+.container {
+    max-width: 750px;
+    margin: 60px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: center;
+    
+}
+
+.day {
+  width: 75%;
+  margin: 10px 25px 10px 25px;
+  padding: 2px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  justify-content: center;
+  text-align: center;
+  
+}
+
+a {
+  text-decoration: none;
+  color:black;
+  padding: 0px;
+  font-weight: bold;
+  font-size: 30px;
+}
