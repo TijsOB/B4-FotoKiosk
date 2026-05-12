@@ -25,6 +25,22 @@
             <h2>Woensdag</h2>
             <a href="wednesday.php">Doorgaan</a>
         </div>
+        <div class="day">
+            <h2>Donderdag</h2>
+            <a href="thursday.php">Doorgaan</a>
+        </div>
+        <div class="day">
+            <h2>Vrijdag</h2>
+            <a href="friday.php">Doorgaan</a>
+        </div>
+        <div class="day">
+            <h2>Zaterdag</h2>
+            <a href="saturday.php">Doorgaan</a>
+        </div>
+        <div class="day">
+            <h2>Zondag</h2>
+            <a href="sunday.php">Doorgaan</a>
+        </div>        
     </main>
 </body>
 </html>
