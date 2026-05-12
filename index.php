@@ -3,27 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <title>Devland</title>
 </head>
 <body>
-    <header>
-        <div class="title">
-            <h1>Devland</h1>
+   <header>
+    <div class="header-content">
+        <div class="wrapper">
+        <img src="/pictures/img/logo-big-v3.png" alt="Het logo van DeveloperLand met een draaimolen, kasteel, achtbaan en tot slot een gezin op de voorgrond." class="logo hidden-on-sm">
         </div>
-    </header>
-
+</header>  
+ 
     <main>
+        <div class="container">
         <div class="day">
-            <h2>Maandag</h2>
-            <a href="monday.php">Doorgaan</a>
+            <a href="sunday.php"><h2>Zondag</h2></a>
+        </div> 
+        <div class="day">
+            <a href="monday.php"><h2>Maandag</h2></a>
         </div>
         <div class="day">
-            <h2>Dinsdag</h2>
-            <a href="tuesday.php">Doorgaan</a>
+            <a href="tuesday.php"><h2>Dinsdag</h2></a>
         </div>
         <div class="day">
-            <h2>Woensdag</h2>
-            <a href="wednesday.php">Doorgaan</a>
+            <a href="wednesday.php"><h2>Woensdag</h2></a>
+        </div>
+        <div class="day">
+            <a href="thursday.php"><h2>Donderdag</h2></a>
+        </div>
+        <div class="day">
+            <a href="friday.php"><h2>Vrijdag</h2></a>
+        </div>
+        <div class="day">
+            <a href="saturday.php"><h2>Zaterdag</h2></a>
+        </div>
+               
         </div>
     </main>
 </body>
