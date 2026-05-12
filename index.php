@@ -37,8 +37,6 @@
         <div class="day">
             <a href="saturday.php"><h2>Zaterdag</h2></a>
         </div>
-               
-        </div>
     </main>
 </body>
 </html>
