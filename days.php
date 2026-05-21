@@ -44,6 +44,10 @@ if ($folderName) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+<script src="https://kit.fontawesome.com/5246fd09f8.js" crossorigin="anonymous"></script>
+
+
+
     <title><?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?></title>
    
 </head>
@@ -69,8 +73,11 @@ if ($folderName) {
         <div class="PHOTO">
             <?php if (!empty($photos)): ?>
                 <?php foreach ($photos as $photo): ?>
-                    <img src="pictures/<?php echo htmlspecialchars($folderName, ENT_QUOTES, 'UTF-8'); ?>/<?php echo htmlspecialchars($photo, ENT_QUOTES, 'UTF-8'); ?>" 
-                         alt="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> foto">
+                    <div class="PHOTO-item">
+                        <img src="pictures/<?php echo htmlspecialchars($folderName, ENT_QUOTES, 'UTF-8'); ?>/<?php echo htmlspecialchars($photo, ENT_QUOTES, 'UTF-8'); ?>" 
+                             alt="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> foto">
+                        <button type="button"><a href="photo.php">Koop <i class="fa-solid fa-cart-shopping"></i></a></button>
+                    </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>Geen foto's beschikbaar voor deze dag.</p>
