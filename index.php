@@ -12,30 +12,31 @@
         <div class="wrapper">
         <img src="/pictures/img/logo-big-v3.png" alt="Het logo van DeveloperLand met een draaimolen, kasteel, achtbaan en tot slot een gezin op de voorgrond." class="logo hidden-on-sm">
         </div>
+</div>
 </header>  
  
     <main>
         <div class="container">
         <div class="day">
-            <a href="sunday.php"><h2>Zondag</h2></a>
+            <a href="days.php?day=Zondag"><h2>Zondag</h2></a>
         </div> 
         <div class="day">
-            <a href="monday.php"><h2>Maandag</h2></a>
+            <a href="days.php?day=Maandag"><h2>Maandag</h2></a>
         </div>
         <div class="day">
-            <a href="tuesday.php"><h2>Dinsdag</h2></a>
+            <a href="days.php?day=Dinsdag"><h2>Dinsdag</h2></a>
         </div>
         <div class="day">
-            <a href="wednesday.php"><h2>Woensdag</h2></a>
+            <a href="days.php?day=Woensdag"><h2>Woensdag</h2></a>
         </div>
         <div class="day">
-            <a href="thursday.php"><h2>Donderdag</h2></a>
+            <a href="days.php?day=Donderdag"><h2>Donderdag</h2></a>
         </div>
         <div class="day">
-            <a href="friday.php"><h2>Vrijdag</h2></a>
+            <a href="days.php?day=Vrijdag"><h2>Vrijdag</h2></a>
         </div>
         <div class="day">
-            <a href="saturday.php"><h2>Zaterdag</h2></a>
+            <a href="days.php?day=Zaterdag"><h2>Zaterdag</h2></a>
         </div>
     </main>
 </body>
