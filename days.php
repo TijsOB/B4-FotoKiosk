@@ -57,13 +57,19 @@ if ($folderName) {
         <div class="wrapper">
         <img src="/pictures/img/logo-big-v3.png" alt="Het logo van DeveloperLand met een draaimolen, kasteel, achtbaan en tot slot een gezin op de voorgrond." class="logo hidden-on-sm">
         </div>
+        
 </div>
     </header>  
     
     <main>
         
             <div class="nav">
-                <a href="index.php">&larr; Terug</a>
+                <div class="nav-item">            
+                    <a href="index.php">&larr; Terug</a>
+                </div>
+                <div class="nav-item">
+                    <a href="buy.php"><i class="fa-solid fa-basket-shopping">Naar Winkelwagen</i></a>
+                </div>
             </div>
             
             <div class="title">
@@ -71,12 +77,14 @@ if ($folderName) {
             </div>
         
         <div class="PHOTO">
+            <?php $id = 0 ?>
             <?php if (!empty($photos)): ?>
                 <?php foreach ($photos as $photo): ?>
+                    <?php $id += 1 ?>
                     <div class="PHOTO-item">
                         <img src="pictures/<?php echo htmlspecialchars($folderName, ENT_QUOTES, 'UTF-8'); ?>/<?php echo htmlspecialchars($photo, ENT_QUOTES, 'UTF-8'); ?>" 
                              alt="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> foto">
-                        <button type="button"><a href="photo.php">Koop <i class="fa-solid fa-cart-shopping"></i></a></button>
+                        <button type="button"><a href="photo.php?day=<?php echo urlencode($day); ?>&id=<?php echo $id; ?>">Koop <i class="fa-solid fa-cart-shopping"></i></a></button>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
