@@ -1,9 +1,14 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/5246fd09f8.js" crossorigin="anonymous"></script>
     <title>Devland</title>
 </head>
 <body>
@@ -12,10 +17,21 @@
         <div class="wrapper">   
         <img src="/pictures/img/logo-big-v3.png" alt="Het logo van DeveloperLand met een draaimolen, kasteel, achtbaan en tot slot een gezin op de voorgrond." class="logo hidden-on-sm">
         </div>
+        
 </div>
 </header>  
  
     <main>
+
+        <div class="nav">
+                <div class="nav-item">            
+                    <a href="index.php">&larr; Terug</a>
+                </div>
+                <div class="nav-item">
+                    <a href="buy.php"><i class="fa-solid fa-basket-shopping">Naar Winkelwagen</i></a>
+                </div>
+            </div>
+
         <div class="container">
         <div class="day">
             <a href="days.php?day=Zondag"><h2>Zondag</h2></a>
