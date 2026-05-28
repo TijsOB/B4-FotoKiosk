@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/5246fd09f8.js" crossorigin="anonymous"></script>
     <title>Shopping Cart</title>
 </head>
 <body>
@@ -70,15 +71,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
         </div>
         </div class="cartitem">
         <div class="cartitem">
-            <div class="cart">
+            <div class="carter">
                 <h2>Totaal foto's: <?php echo $totalPhotos ?></h2>
                 <h2>Totaal prijs = €<?php echo $price ?></h2>
             </div>
-            <div class="cart">
-                <button><a href="/">Doorgaan winkelen</a></button>
-
-                <button><a href="/">Betalen</a></button>
-
+            <div class="carter">
+                <div class="cart1">
+                    <button><a href="/">Doorgaan met winkelen</a></button>
+                </div>
+                <div class="cart2">
+                    <button><a href="transaction.php">Betalen <i class="fa-solid fa-coins"></i></a></button>
+                </div>
             </div>
         <?php else: ?>
             <p>Je winkelwagen is leeg. <a href="index.php">Ga terug en selecteer foto's</a></p>
