@@ -477,7 +477,7 @@ p  { margin: 0; }
 }
 .btn--icon:hover { color: var(--danger); border-color: var(--danger); background: #fff; }
 
-a {
+.btn a {
   background: var(--surface); color: var(--text);
   border-color: var(--border-strong);display: inline-flex; align-items: center; justify-content: center;
   gap: 0.55rem;
@@ -493,7 +493,7 @@ a {
   background: var(--surface); color: var(--text);
   border-color: var(--border-strong);
 }
-a:hover { border-color: var(--primary); color: var(--primary); }
+.btn a:hover { border-color: var(--primary); color: var(--primary); }
 
 
 /* =========================================================
