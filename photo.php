@@ -7,8 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
         $_SESSION['cart'] = [];
     }
     $_SESSION['cart'][] = [
-        'id' => $id ?? 0,
-        'day' => $_POST['day'] ?? 'Onbekend',
+        'day'   => $_POST['day']   ?? 'Onbekend',
         'photo' => $_POST['photo'] ?? ''
     ];
     header('Location: buy.php');
@@ -25,18 +24,12 @@ if ($day === '' || !preg_match('/^[\p{L} ]+$/u', $day) || mb_strlen($day) > 50) 
     $day = 'Onbekend';
 }
 
-// Map Dutch day names to folder numbers
 $dayMap = [
-    'Zondag' => '0_Zondag',
-    'Maandag' => '1_Maandag',
-    'Dinsdag' => '2_Dinsdag',
-    'Woensdag' => '3_Woensdag',
-    'Donderdag' => '4_Donderdag',
-    'Vrijdag' => '5_Vrijdag',
-    'Zaterdag' => '6_Zaterdag'
+    'Zondag' => '0_Zondag', 'Maandag' => '1_Maandag', 'Dinsdag' => '2_Dinsdag',
+    'Woensdag' => '3_Woensdag', 'Donderdag' => '4_Donderdag',
+    'Vrijdag' => '5_Vrijdag', 'Zaterdag' => '6_Zaterdag'
 ];
 
-// Get the folder name for this day
 $folderName = $dayMap[$day] ?? null;
 $photos = [];
 
@@ -45,7 +38,6 @@ if ($folderName) {
     if (is_dir($folderPath)) {
         $files = scandir($folderPath);
         $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-        
         foreach ($files as $file) {
             $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             if (in_array($ext, $imageExtensions)) {
@@ -55,68 +47,62 @@ if ($folderName) {
         sort($photos);
     }
 }
+
+$selectedPhoto = $photos[$id - 1] ?? null;
+
+$pageTitle = $selectedPhoto ? "Foto · $day" : "Foto";
+$activeNav = 'home';
+include 'partials/header.php';
 ?>
+<main class="page">
+    <section class="wrapper">
+        <nav class="breadcrumbs" aria-label="Kruimelpad">
+            <a href="index.php">Dagen</a>
+            <span aria-hidden="true">/</span>
+            <a href="days.php?day=<?php echo urlencode($day); ?>"><?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?></a>
+            <span aria-hidden="true">/</span>
+            <span class="is-current">Foto #<?php echo str_pad($id, 2, '0', STR_PAD_LEFT); ?></span>
+        </nav>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://kit.fontawesome.com/5246fd09f8.js" crossorigin="anonymous"></script>
-    <title>Devland, Foto</title>
-</head>
-<body>
-   <header>
-    <div class="header-content">
-        <div class="wrapper">
-        <img src="/pictures/img/logo-big-v3.png" alt="Het logo van DeveloperLand met een draaimolen, kasteel, achtbaan en tot slot een gezin op de voorgrond." class="logo hidden-on-sm">
-        </div>
-        
-</div>
-</header>  
- 
-    <main>
-        <div class="nav">
-                <div class="nav-item">            
-                    <a href="index.php">&larr; Terug</a>
+        <?php if ($selectedPhoto): ?>
+            <article class="photo-detail">
+                <div class="photo-detail__media">
+                    <img src="pictures/<?php echo htmlspecialchars($folderName, ENT_QUOTES, 'UTF-8'); ?>/<?php echo htmlspecialchars($selectedPhoto, ENT_QUOTES, 'UTF-8'); ?>"
+                         alt="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> foto <?php echo $id; ?>">
                 </div>
-                <div class="nav-item">
-                    <a href="buy.php"><i class="fa-solid fa-basket-shopping">Naar Winkelwagen</i></a>
-                </div>
+                <aside class="photo-detail__panel">
+                    <p class="eyebrow">DeveloperLand · Foto</p>
+                    <h1>Herinnering <?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?></h1>
+                    <dl class="spec-list">
+                        <div><dt>Dag</dt><dd><?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?></dd></div>
+                        <div><dt>Foto naam</dt><dd><?php echo htmlspecialchars(pathinfo($selectedPhoto, PATHINFO_FILENAME), ENT_QUOTES, 'UTF-8'); ?></dd></div>
+                        <div><dt>Formaat</dt><dd>Hoge resolutie · digitaal</dd></div>
+                    </dl>
+                    <div class="price-row">
+                        <span class="price-row__label">Prijs</span>
+                        <span class="price-row__value">&euro;12,50</span>
+                    </div>
+                    <form method="POST" class="photo-detail__actions">
+                        <input type="hidden" name="day"   value="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="hidden" name="photo" value="<?php echo htmlspecialchars($selectedPhoto, ENT_QUOTES, 'UTF-8'); ?>">
+                        <button type="submit" name="add_to_cart" value="1" class="btn btn--primary btn--lg btn--block">
+                            <i class="fa-solid fa-cart-shopping"></i> In winkelwagen
+                        </button>
+                        <a href="days.php?day=<?php echo urlencode($day); ?>" class="btn btn--ghost btn--block">
+                            <i class="fa-solid fa-arrow-left"></i> Terug naar overzicht
+                        </a>
+                    </form>
+                </aside>
+            </article>
+        <?php else: ?>
+            <div class="empty-state">
+                <i class="fa-regular fa-image"></i>
+                <h2>Foto niet gevonden</h2>
+                <p>Deze foto bestaat niet (meer).</p>
+                <a href="days.php?day=<?php echo urlencode($day); ?>" class="btn btn--secondary">Terug naar <?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?></a>
             </div>
+        <?php endif; ?>
+    </section>
+</main>
 
-        <div class="container">
-            <?php $checkid = 0 ?>
-            <?php if (!empty($photos)): ?>
-                <?php foreach ($photos as $photo): ?>
-                    <?php $checkid += 1; ?>
-                    
-                    <?php if ($checkid == $id): ?>
-                        <div class="PhotoContainer">
-                            <div class="PhotoContainer">
-                                <img src="pictures/<?php echo htmlspecialchars($folderName, ENT_QUOTES, 'UTF-8'); ?>/<?php echo htmlspecialchars($photo, ENT_QUOTES, 'UTF-8'); ?>" 
-                                alt="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> foto">
-                            </div>
-                            
-                            <div class="PhotoContainerItem">
-                                <h2>Dag: <?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> </h2>
-                                <p>Foto Naam: <?php echo htmlspecialchars(pathinfo($photo, PATHINFO_FILENAME), ENT_QUOTES, 'UTF-8'); ?></p>
-                            </div>
-                            
-                        </div>
-                        <form method="POST" style="display: inline;">
-                            <input type="hidden" name="day" value="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="hidden" name="photo" value="<?php echo htmlspecialchars($photo, ENT_QUOTES, 'UTF-8'); ?>">
-                            <button type="submit" name="add_to_cart" value="1">Koop <i class="fa-solid fa-cart-shopping"></i></button>
-                        </form>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Geen foto's beschikbaar voor deze dag.</p>
-            <?php endif; ?>
-        </div>
-
-    </main>
-</body>
-</html>
+<?php include 'partials/footer.php'; ?>
