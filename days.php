@@ -95,7 +95,7 @@ include 'partials/header.php';
                 <input type="number" name="minute" id="minute" min="0" max="59" step="1" value="<?php echo $filterMinute !== null ? htmlspecialchars($filterMinute, ENT_QUOTES, 'UTF-8') : ''; ?>" placeholder="0">
 
                 <button type="submit" class="btn btn--secondary">Filteren</button>
-                <a href="days.php?day=<?php echo urlencode($day); ?>" class="btn btn--tertiary"><button class="btn btn--secondary">Reset</button></a>
+                <a href="days.php?day=<?php echo urlencode($day); ?>">Reset</a>
             </form>
         </div>
 
