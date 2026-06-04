@@ -43,7 +43,7 @@ $total = count($cart) * 12.50;
                 </div>
 
                 <button type="submit" class="btn btn--primary btn--lg btn--block">
-                    <i class="fa-solid fa-coins"></i> Door naar afrekenen
+                    <i class="fa-solid fa-coins"></i> Door naar betalings methode
                 </button>
             </form>
 
