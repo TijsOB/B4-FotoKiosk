@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include 'helpers.php';
+
 // Handle adding photo to cart
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     if (!isset($_SESSION['cart'])) {
@@ -16,6 +18,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
 
 $dayRaw = filter_input(INPUT_GET, 'day');
 $day = $dayRaw ? trim($dayRaw) : '';
+
+$filterHourRaw = filter_input(INPUT_GET, 'hour');
+$filterMinuteRaw = filter_input(INPUT_GET, 'minute');
+$filterHour = ($filterHourRaw !== null && $filterHourRaw !== '') ? filter_var($filterHourRaw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 23]]) : null;
+$filterMinute = ($filterMinuteRaw !== null && $filterMinuteRaw !== '') ? filter_var($filterMinuteRaw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 59]]) : null;
+if ($filterHour === false) {
+    $filterHour = null;
+}
+if ($filterMinute === false) {
+    $filterMinute = null;
+}
 
 $idRaw = filter_input(INPUT_GET, 'id');
 $id = $idRaw ? (int)$idRaw : 0;
@@ -35,17 +48,8 @@ $photos = [];
 
 if ($folderName) {
     $folderPath = 'pictures/' . $folderName;
-    if (is_dir($folderPath)) {
-        $files = scandir($folderPath);
-        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-        foreach ($files as $file) {
-            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-            if (in_array($ext, $imageExtensions)) {
-                $photos[] = $file;
-            }
-        }
-        sort($photos);
-    }
+    $photos = loadPhotosFromFolder($folderPath);
+    $photos = filterPhotosByTime($photos, $filterHour, $filterMinute);
 }
 
 $selectedPhoto = $photos[$id - 1] ?? null;
@@ -88,7 +92,7 @@ include 'partials/header.php';
                         <button type="submit" name="add_to_cart" value="1" class="btn btn--primary btn--lg btn--block">
                             <i class="fa-solid fa-cart-shopping"></i> In winkelwagen
                         </button>
-                        <a href="days.php?day=<?php echo urlencode($day); ?>" class="btn btn--ghost btn--block">
+                        <a href="days.php?day=<?php echo urlencode($day); ?><?php echo $filterHour !== null ? '&hour=' . urlencode($filterHour) : ''; ?><?php echo $filterMinute !== null ? '&minute=' . urlencode($filterMinute) : ''; ?>" class="btn btn--ghost btn--block">
                             <i class="fa-solid fa-arrow-left"></i> Terug naar overzicht
                         </a>
                     </form>
