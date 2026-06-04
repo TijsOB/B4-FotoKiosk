@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 $dayRaw = filter_input(INPUT_GET, 'day');
 $day = $dayRaw ? trim($dayRaw) : '';
@@ -18,7 +19,6 @@ $dayMap = [
     'Zaterdag' => '6_Zaterdag'
 ];
 
-// Get the folder name for this day
 $folderName = $dayMap[$day] ?? null;
 $photos = [];
 
@@ -27,7 +27,6 @@ if ($folderName) {
     if (is_dir($folderPath)) {
         $files = scandir($folderPath);
         $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-        
         foreach ($files as $file) {
             $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             if (in_array($ext, $imageExtensions)) {
@@ -37,61 +36,62 @@ if ($folderName) {
         sort($photos);
     }
 }
+
+$pageTitle = $day;
+$activeNav = 'home';
+include 'partials/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-<script src="https://kit.fontawesome.com/5246fd09f8.js" crossorigin="anonymous"></script>
+<main class="page">
+    <section class="wrapper">
+        <nav class="breadcrumbs" aria-label="Kruimelpad">
+            <a href="index.php"><i class="fa-solid fa-arrow-left"></i> Alle dagen</a>
+            <span aria-hidden="true">/</span>
+            <span class="is-current"><?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?></span>
+        </nav>
 
-
-
-    <title><?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?></title>
-   
-</head>
-<body>
-    <header>
-    <div class="header-content">
-        <div class="wrapper">
-        <img src="/pictures/img/logo-big-v3.png" alt="Het logo van DeveloperLand met een draaimolen, kasteel, achtbaan en tot slot een gezin op de voorgrond." class="logo hidden-on-sm">
-        </div>
-        
-</div>
-    </header>  
-    
-    <main>
-        
-            <div class="nav">
-                <div class="nav-item">            
-                    <a href="index.php">&larr; Terug</a>
-                </div>
-                <div class="nav-item">
-                    <a href="buy.php"><i class="fa-solid fa-basket-shopping">Naar Winkelwagen</i></a>
-                </div>
-            </div>
-            
-            <div class="title">
+        <header class="section-head section-head--row">
+            <div>
+                <p class="eyebrow">Foto's van</p>
                 <h1><?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?></h1>
             </div>
-        
-        <div class="PHOTO">
-            <?php $id = 0 ?>
-            <?php if (!empty($photos)): ?>
-                <?php foreach ($photos as $photo): ?>
-                    <?php $id += 1 ?>
-                    <div class="PHOTO-item">
-                        <img src="pictures/<?php echo htmlspecialchars($folderName, ENT_QUOTES, 'UTF-8'); ?>/<?php echo htmlspecialchars($photo, ENT_QUOTES, 'UTF-8'); ?>" 
-                             alt="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> foto">
-                        <button type="button"><a href="photo.php?day=<?php echo urlencode($day); ?>&id=<?php echo $id; ?>">Koop <i class="fa-solid fa-cart-shopping"></i></a></button>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Geen foto's beschikbaar voor deze dag.</p>
-            <?php endif; ?>
-        </div>
-    </main>
-</body>
-</html>
+            <div class="section-head__meta">
+                <span class="pill"><i class="fa-solid fa-images"></i> <?php echo count($photos); ?> foto's</span>
+                <span class="pill pill--accent"><i class="fa-solid fa-tag"></i> &euro;12,50 per foto</span>
+            </div>
+        </header>
 
+        <?php if (!empty($photos)): ?>
+            <div class="photo-grid">
+                <?php $id = 0; foreach ($photos as $photo): $id++; ?>
+                    <article class="photo-card">
+                        <a class="photo-card__media" href="photo.php?day=<?php echo urlencode($day); ?>&id=<?php echo $id; ?>">
+                            <img loading="lazy"
+                                 src="pictures/<?php echo htmlspecialchars($folderName, ENT_QUOTES, 'UTF-8'); ?>/<?php echo htmlspecialchars($photo, ENT_QUOTES, 'UTF-8'); ?>"
+                                 alt="<?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> foto <?php echo $id; ?>">
+                            <span class="photo-card__overlay"><i class="fa-solid fa-magnifying-glass-plus"></i> Bekijken</span>
+                        </a>
+                        <div class="photo-card__body">
+                            <div class="photo-card__meta">
+                                <span class="photo-card__index">#<?php echo str_pad($id, 2, '0', STR_PAD_LEFT); ?></span>
+                                <span class="photo-card__price">&euro;12,50</span>
+                            </div>
+                            <a class="btn btn--primary btn--block"
+                               href="photo.php?day=<?php echo urlencode($day); ?>&id=<?php echo $id; ?>">
+                                <i class="fa-solid fa-cart-shopping"></i> Bekijk &amp; koop
+                            </a>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="empty-state">
+                <i class="fa-regular fa-image"></i>
+                <h2>Geen foto's beschikbaar</h2>
+                <p>Voor <?php echo htmlspecialchars($day, ENT_QUOTES, 'UTF-8'); ?> zijn nog geen foto's geüpload.</p>
+                <a href="index.php" class="btn btn--secondary"><i class="fa-solid fa-arrow-left"></i> Kies een andere dag</a>
+            </div>
+        <?php endif; ?>
+    </section>
+</main>
+
+<?php include 'partials/footer.php'; ?>
