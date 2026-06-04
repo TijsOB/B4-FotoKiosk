@@ -1,93 +1,99 @@
 <?php
 session_start();
 
-// Handle removing photo from cart
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove'])) {
     $removeIndex = (int)$_POST['remove'];
     if (isset($_SESSION['cart'][$removeIndex])) {
         unset($_SESSION['cart'][$removeIndex]);
-        $_SESSION['cart'] = array_values($_SESSION['cart']); // Re-index array
+        $_SESSION['cart'] = array_values($_SESSION['cart']);
     }
     header('Location: buy.php');
     exit();
 }
 
+$dayMap = [
+    'Zondag' => '0_Zondag', 'Maandag' => '1_Maandag', 'Dinsdag' => '2_Dinsdag',
+    'Woensdag' => '3_Woensdag', 'Donderdag' => '4_Donderdag',
+    'Vrijdag' => '5_Vrijdag', 'Zaterdag' => '6_Zaterdag'
+];
+
+$cart = $_SESSION['cart'] ?? [];
+$totalPhotos = count($cart);
+$price = $totalPhotos * 12.50;
+
+$pageTitle = 'Winkelwagen';
+$activeNav = 'cart';
+include 'partials/header.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://kit.fontawesome.com/5246fd09f8.js" crossorigin="anonymous"></script>
-    <title>Shopping Cart</title>
-</head>
-<body>
-    <header>
-        <div class="header-content">
-            <div class="wrapper">   
-            <img src="/pictures/img/logo-big-v3.png" alt="Het logo van DeveloperLand met een draaimolen, kasteel, achtbaan en tot slot een gezin op de voorgrond." class="logo hidden-on-sm">
+<main class="page">
+    <section class="wrapper">
+        <header class="section-head section-head--row">
+            <div>
+                <p class="eyebrow">Bestelling</p>
+                <h1>Winkelwagen</h1>
             </div>
-            
-        </div>       
-    </header>  
+            <a href="index.php" class="btn btn--ghost"><i class="fa-solid fa-arrow-left"></i> Verder winkelen</a>
+        </header>
 
-    <main>
-        <div class="nav">
-            <div class="nav-item">
-                <a href="index.php">&larr; Terug</a>
-            </div class="nav-item">
-        </div>
-
-        <?php
-        $cart = $_SESSION['cart'] ?? [];
-        $totalPhotos = count($cart);
-        $price = $totalPhotos * 67;
-        ?>
-        
-        <div class="cartcontainer">
-            <div class="cartitem">
-        <h2>Winkelwagen</h2>
-        <div class="buycontainer">
         <?php if (!empty($cart)): ?>
-            
-                <?php foreach ($cart as $index => $item): ?>
-                    <div class="buy-items">
-                        <div class="buy-item">
-                            <p><strong>Dag:</strong> <?php echo htmlspecialchars($item['day'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p><strong>Foto:</strong> <?php echo htmlspecialchars($item['photo'], ENT_QUOTES, 'UTF-8'); ?></p>
-                            <p><strong>Prijs:</strong> €67</p>
-                        </div>
-                    <div class="buy-item">
-                        <form method="POST" style="display: inline;">
-                            <input type="hidden" name="remove" value="<?php echo $index; ?>">
-                            <button type="submit">Verwijderen</button>
-                        </form>
-                    </div>
-                    </div>
-                <?php endforeach; ?>
-            
-        </div>
-        </div class="cartitem">
-        <div class="cartitem">
-            <div class="carter">
-                <h2>Totaal foto's: <?php echo $totalPhotos ?></h2>
-                <h2>Totaal prijs = €<?php echo $price ?></h2>
-            </div>
-            <div class="carter">
-                <div class="cart1">
-                    <button><a href="/">Doorgaan met winkelen</a></button>
+            <div class="cart-layout">
+                <div class="cart-list">
+                    <?php foreach ($cart as $index => $item):
+                        $itemFolder = $dayMap[$item['day']] ?? null;
+                        $thumb = $itemFolder ? 'pictures/' . $itemFolder . '/' . $item['photo'] : null;
+                    ?>
+                        <article class="cart-row">
+                            <?php if ($thumb): ?>
+                                <div class="cart-row__thumb">
+                                    <img loading="lazy" src="<?php echo htmlspecialchars($thumb, ENT_QUOTES, 'UTF-8'); ?>"
+                                         alt="<?php echo htmlspecialchars($item['day'], ENT_QUOTES, 'UTF-8'); ?>">
+                                </div>
+                            <?php endif; ?>
+                            <div class="cart-row__body">
+                                <h3><?php echo htmlspecialchars(pathinfo($item['photo'], PATHINFO_FILENAME), ENT_QUOTES, 'UTF-8'); ?></h3>
+                                <p class="cart-row__meta">
+                                    <span><i class="fa-regular fa-calendar"></i> <?php echo htmlspecialchars($item['day'], ENT_QUOTES, 'UTF-8'); ?></span>
+                                    <span><i class="fa-solid fa-image"></i> Digitale download</span>
+                                </p>
+                            </div>
+                            <div class="cart-row__price">&euro;12,50</div>
+                            <form method="POST" class="cart-row__remove">
+                                <input type="hidden" name="remove" value="<?php echo $index; ?>">
+                                <button type="submit" class="btn btn--icon" aria-label="Verwijderen">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </form>
+                        </article>
+                    <?php endforeach; ?>
                 </div>
-                <div class="cart2">
-                    <button><a href="transaction.php">Betalen <i class="fa-solid fa-coins"></i></a></button>
-                </div>
+
+                <aside class="cart-summary">
+                    <h2>Overzicht</h2>
+                    <dl class="summary-list">
+                        <div><dt>Aantal foto's</dt><dd><?php echo $totalPhotos; ?></dd></div>
+                        <div><dt>Prijs per foto</dt><dd>&euro;12,50</dd></div>
+                        <div><dt>Subtotaal</dt><dd>&euro;<?php echo number_format($price, 2, ',', '.'); ?></dd></div>
+                    </dl>
+                    <div class="summary-total">
+                        <span>Totaal</span>
+                        <span>&euro;<?php echo number_format($price, 2, ',', '.'); ?></span>
+                    </div>
+                    <a href="transaction.php" class="btn btn--primary btn--lg btn--block">
+                        Afrekenen <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="index.php" class="btn btn--ghost btn--block">Verder winkelen</a>
+                    <p class="summary-note"><i class="fa-solid fa-lock"></i> Veilig betalen via DeveloperLand</p>
+                </aside>
             </div>
         <?php else: ?>
-            <p>Je winkelwagen is leeg. <a href="index.php">Ga terug en selecteer foto's</a></p>
+            <div class="empty-state">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <h2>Je winkelwagen is leeg</h2>
+                <p>Selecteer eerst een paar mooie herinneringen.</p>
+                <a href="index.php" class="btn btn--primary">Kies een dag</a>
+            </div>
         <?php endif; ?>
-        </div class="cartitem">
-        </div>
-    </main>
-</body>
-</html>
+    </section>
+</main>
+
+<?php include 'partials/footer.php'; ?>
