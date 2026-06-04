@@ -1,64 +1,45 @@
 <?php
 session_start();
+$pageTitle = 'Welkom';
+$activeNav = 'home';
+include 'partials/header.php';
+
+$days = [
+    ['name' => 'Zondag',    'icon' => 'fa-sun'],
+    ['name' => 'Maandag',   'icon' => 'fa-mug-hot'],
+    ['name' => 'Dinsdag',   'icon' => 'fa-ticket'],
+    ['name' => 'Woensdag',  'icon' => 'fa-children'],
+    ['name' => 'Donderdag', 'icon' => 'fa-ice-cream'],
+    ['name' => 'Vrijdag',   'icon' => 'fa-rocket'],
+    ['name' => 'Zaterdag',  'icon' => 'fa-star'],
+];
 ?>
+<main class="page">
+    <section class="hero wrapper">
+        <p class="eyebrow">DeveloperLand · Fotoservice</p>
+        <h1>Herbeleef jouw dag in het park.</h1>
+        <p class="hero__lede">
+            Selecteer de dag van je bezoek en kies de mooiste herinneringen.
+            Elke foto wordt in hoge resolutie geleverd voor &euro;12,50.
+        </p>
+    </section>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://kit.fontawesome.com/5246fd09f8.js" crossorigin="anonymous"></script>
-    <title>Devland</title>
-</head>
-<body>
-   <header>
-    <div class="header-content">
-        <div class="wrapper">   
-        <img src="/pictures/img/logo-big-v3.png" alt="Het logo van DeveloperLand met een draaimolen, kasteel, achtbaan en tot slot een gezin op de voorgrond." class="logo hidden-on-sm">
+    <section class="wrapper">
+        <header class="section-head">
+            <h2>Kies een dag</h2>
+            <p>We hebben elke dag van de week vastgelegd.</p>
+        </header>
+
+        <div class="day-grid">
+            <?php foreach ($days as $d): ?>
+                <a class="day-card" href="days.php?day=<?php echo urlencode($d['name']); ?>">
+                    <span class="day-card__icon"><i class="fa-solid <?php echo $d['icon']; ?>"></i></span>
+                    <span class="day-card__name"><?php echo htmlspecialchars($d['name'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="day-card__cta">Bekijk foto's <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+            <?php endforeach; ?>
         </div>
-        
-</div>
-</header>  
- 
-    <main>
+    </section>
+</main>
 
-        <div class="nav">
-                <div class="nav-item">            
-                    <a href="index.php">&larr; Terug</a>
-                </div>
-                <div class="nav-item">
-                    <a href="buy.php"><i class="fa-solid fa-basket-shopping">Naar Winkelwagen</i></a>
-                </div>
-            </div>
-
-        <div class="container">
-            <div class="days-row days-row--four">
-                <div class="day">
-                    <a href="days.php?day=Zondag"><h2>Zondag</h2></a>
-                </div>
-                <div class="day">
-                    <a href="days.php?day=Maandag"><h2>Maandag</h2></a>
-                </div>
-                <div class="day">
-                    <a href="days.php?day=Dinsdag"><h2>Dinsdag</h2></a>
-                </div>
-                <div class="day">
-                    <a href="days.php?day=Woensdag"><h2>Woensdag</h2></a>
-                </div>
-            </div>
-            <div class="days-row days-row--three">
-                <div class="day">
-                    <a href="days.php?day=Donderdag"><h2>Donderdag</h2></a>
-                </div>
-                <div class="day">
-                    <a href="days.php?day=Vrijdag"><h2>Vrijdag</h2></a>
-                </div>
-                <div class="day">
-                    <a href="days.php?day=Zaterdag"><h2>Zaterdag</h2></a>
-                </div>
-            </div>
-        </div>
-    </main>
-</body>
-</html>
+<?php include 'partials/footer.php'; ?>
